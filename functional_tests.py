@@ -7,13 +7,13 @@ class NewVisitorTest(unittest.TestCase):
 
 	def setUp(self):
 		self.browser = webdriver.Firefox()
-		
+
 	def tearDown(self):
 		self.browser.quit()
-		
+
 	def test_can_start_a_list_and_retrieve_it_later(self):
 		# During the course of the day, I need to generate
-		# to-do lists. To facilitate the process, I would like 
+		# to-do lists. To facilitate the process, I would like
 		# to access a web page
 		self.browser.get('http://localhost:8000')
 
@@ -28,7 +28,7 @@ class NewVisitorTest(unittest.TestCase):
 			inputbox.get_attribute('placeholder'),
 			'Enter a to-do item'
 		)
-		
+
 		# I type "buy peacock feathers" into a text box
 		# so i can start to make my fishing lures
 		inputbox.send_keys('Buy peacock feathers')
@@ -37,6 +37,12 @@ class NewVisitorTest(unittest.TestCase):
 		# "1: Buy peacock feathers" as a to-do list item
 		inputbox.send_keys(Keys.ENTER)
 		time.sleep(1)
+
+		table = self.browser.find_element_by_id('id_list_table')
+		rows = table.find_element_by_tag_name('tr')
+		self.assertTrue(
+			any(row.text == '1: Buy peacock feathers' for row in rows)
+		)
 
 		# there is still a text box inviting to add another item
 		# I enter "Use peacock feathers to make a fly"
