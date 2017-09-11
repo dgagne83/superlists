@@ -1,4 +1,6 @@
 from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
+import time
 import unittest
 
 class NewVisitorTest(unittest.TestCase):
@@ -17,18 +19,28 @@ class NewVisitorTest(unittest.TestCase):
 
 		# I notice the tab says "To-Do" as the header and title
 		self.assertIn('To-Do', self.browser.title)
-		self.fail('Finish the test!')
+		header_text = self.browser.find_element_by_tag_name('h1').text
+		self.assertIn('To-Do', header_text)
 
 		# I'm invited to enter a to-do item right away
-
+		inputbox = self.browser.find_element_by_id('id_new_item')
+		self.assertEqual(
+			inputbox.get_attribute('placeholder'),
+			'Enter a to-do item'
+		)
+		
 		# I type "buy peacock feathers" into a text box
 		# so i can start to make my fishing lures
+		inputbox.send_keys('Buy peacock feathers')
 
 		# I hit enter and the page updates with
 		# "1: Buy peacock feathers" as a to-do list item
+		inputbox.send_keys(Keys.ENTER)
+		time.sleep(1)
 
 		# there is still a text box inviting to add another item
 		# I enter "Use peacock feathers to make a fly"
+		self.fail('Finish the test!')
 
 		# the page updates again with both items
 
