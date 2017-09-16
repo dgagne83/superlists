@@ -40,20 +40,29 @@ class NewVisitorTest(unittest.TestCase):
 
 		table = self.browser.find_element_by_id('id_list_table')
 		rows = table.find_elements_by_tag_name('tr')
-		self.assertTrue(
-			any(row.text == '1: Buy peacock feathers' for row in rows),
-			'New to-do item did not appear in table'
-		)
+		self.assertIn('1: Buy peacock feathers', [row.text for row in rows])
 
 		# there is still a text box inviting to add another item
 		# I enter "Use peacock feathers to make a fly"
-		self.fail('Finish the test!')
+		inputbox = self.browser.find_element_by_id('id_new_item')
+		self.assertEqual(
+			inputbox.get_attribute('placeholder'),
+			'Enter a to-do item'
+		)
+		inputbox.send_keys('Use peacock feathers to make a fly')
+		inputbox.send_keys(Keys.ENTER)
+		time.sleep(1)
 
 		# the page updates again with both items
-
+		table = self.browser.find_element_by_id('id_list_table')
+		rows = table.find_elements_by_tag_name('tr')
+		self.assertIn('1: Buy peacock feathers', [row.text for row in rows])
+		self.assertIn('2: Use peacock feathers to make a fly', [row.text for row in rows])
+		
 		# I wonder whether the site will remember my list
 		# then I notice the site generated a unique url --
 		# there is some explanatory text
+		self.fail('Finish the test!')
 
 		# I visit the url and the text is still there
 
