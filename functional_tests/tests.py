@@ -1,9 +1,9 @@
+from django.test import LiveServerTestCase
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 import time
-import unittest
 
-class NewVisitorTest(unittest.TestCase):
+class NewVisitorTest(LiveServerTestCase):
 
 	def setUp(self):
 		self.browser = webdriver.Firefox()
@@ -20,7 +20,7 @@ class NewVisitorTest(unittest.TestCase):
 		# During the course of the day, I need to generate
 		# to-do lists. To facilitate the process, I would like
 		# to access a web page
-		self.browser.get('http://localhost:8000')
+		self.browser.get(self.live_server_url)
 
 		# I notice the tab says "To-Do" as the header and title
 		self.assertIn('To-Do', self.browser.title)
@@ -63,7 +63,3 @@ class NewVisitorTest(unittest.TestCase):
 		# I visit the url and the text is still there
 
 		# satisfied, I close my computer
-
-if __name__ == '__main__':
-	unittest.main(warnings='ignore')
-
