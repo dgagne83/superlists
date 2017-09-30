@@ -68,8 +68,52 @@ class NewVisitorTest(LiveServerTestCase):
 		# I wonder whether the site will remember my list
 		# then I notice the site generated a unique url --
 		# there is some explanatory text
-		self.fail('Finish the test!')
+		# self.fail('Finish the test!')
 
 		# I visit the url and the text is still there
 
 		# satisfied, I close my computer
+	
+	def test_multiple_users_can_start_lists_at_different_urls(self):
+		# I start a new to-do list
+		self.browser.get(self.live_server_url)
+		inputbox = self.browser.find_element_by_id('id_new_item')
+		inputbox.send_keys('Buy peacock feathers')
+		inputbox.send_keys(Keys.ENTER)
+		self.wait_for_row_in_list_table('1: Buy peacock feathers')
+		
+		# I notice the list has a unique url
+		danial_list_url = self.browser.current_url
+		self.assertRegex(danial_list_url, '/lists/.+')
+		
+		# a new user, francis comes to the site
+		
+		## we use a new browser session to make sure no information
+		## from danial's list is coming through from cookies, etc
+		self.browser.quit()
+		self.browser = webdriver.Firefox()
+		
+		# francis visits the home home page and there is no
+		# sign of danials list
+		self.browser.get(self.live_server_url)
+		page_text = self.browser.find_element_by_tag_name('body').text
+		self.assertNotIn('Buy peacock feathers', page_text)
+		self.assertNotIn('make a fly', page_text)
+		
+		# francis begins to enter list items
+		inputbox = self.browser.find_element_by_id('id_new_item')
+		inputbox.send_keys('Buy milk')
+		inputbox.send_keys(Keys.ENTER)
+		self.wait_for_row_in_list_table('1: Buy milk')
+		
+		# francis gets his own unique url
+		francis_list_url = self.browser.current_url
+		self.assertRegex(francis_list_url, '/lists/.+')
+		self.assertNotEqual(francis_list_url, danial_list_url)
+		
+		# still no sign of danials url
+		page_text = self.browser.find_element_by_tag_name('body').text
+		self.assertNotIn('Buy peacock feathers', page_text)
+		self.assertNotIn('make a fly', page_text)
+		
+		# satisfied, francis closes his computer
