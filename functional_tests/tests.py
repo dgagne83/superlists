@@ -28,7 +28,7 @@ class NewVisitorTest(LiveServerTestCase):
 				time.sleep(0.5)
 				
 
-	def test_can_start_a_list_and_retrieve_it_later(self):
+	def test_can_start_a_list_for_one_user(self):
 		# During the course of the day, I need to generate
 		# to-do lists. To facilitate the process, I would like
 		# to access a web page
@@ -62,8 +62,8 @@ class NewVisitorTest(LiveServerTestCase):
 		inputbox.send_keys(Keys.ENTER)
 
 		# the page updates again with both items
-		self.wait_for_row_in_list_table('1: Buy peacock feathers')
 		self.wait_for_row_in_list_table('2: Use peacock feathers to make a fly')
+		self.wait_for_row_in_list_table('1: Buy peacock feathers')
 		
 		# I wonder whether the site will remember my list
 		# then I notice the site generated a unique url --
