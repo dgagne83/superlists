@@ -64,15 +64,6 @@ class NewVisitorTest(LiveServerTestCase):
 		# the page updates again with both items
 		self.wait_for_row_in_list_table('2: Use peacock feathers to make a fly')
 		self.wait_for_row_in_list_table('1: Buy peacock feathers')
-		
-		# I wonder whether the site will remember my list
-		# then I notice the site generated a unique url --
-		# there is some explanatory text
-		# self.fail('Finish the test!')
-
-		# I visit the url and the text is still there
-
-		# satisfied, I close my computer
 	
 	def test_multiple_users_can_start_lists_at_different_urls(self):
 		# I start a new to-do list
@@ -114,6 +105,30 @@ class NewVisitorTest(LiveServerTestCase):
 		# still no sign of danials url
 		page_text = self.browser.find_element_by_tag_name('body').text
 		self.assertNotIn('Buy peacock feathers', page_text)
-		self.assertNotIn('make a fly', page_text)
+		self.assertIn('Buy milk', page_text)
 		
 		# satisfied, francis closes his computer
+		
+	def test_layout_and_styling(self):
+		# I go to the home page
+		self.browser.get(self.live_server_url)
+		self.browser.set_window_size(1024, 768)
+		
+		# I notice the input box is nicely centred
+		inputbox = self.browser.find_element_by_id('id_new_item')
+		self.assertAlmostEqual(
+			inputbox.location['x'] + inputbox.size['width'] / 2,
+			512,
+			delta=10
+		)
+		
+		# I start a new list and see its nicely centred there too
+		inputbox.send_keys('testing')
+		inputbox.send_keys(Keys.ENTER)
+		self.wait_for_row_in_list_table('1: testing')
+		inputbox = self.browser.find_element_by_id('id_new_item')
+		self.assertAlmostEqual(
+			inputbox.location['x'] + inputbox.size['width'] / 2,
+			512,
+			delta=10
+		)
