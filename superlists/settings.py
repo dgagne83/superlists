@@ -25,7 +25,7 @@ SECRET_KEY = 'f$nb^cj0&@d!vxc_!ce0g@t6w&rg7o&+bjcf62$q-s45#8k9r6'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['ticketdraft.ca']
+ALLOWED_HOSTS = ['159.203.59.80']
 
 
 # Application definition
