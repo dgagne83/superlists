@@ -26,8 +26,7 @@ SECRET_KEY = 'f$nb^cj0&@d!vxc_!ce0g@t6w&rg7o&+bjcf62$q-s45#8k9r6'
 DEBUG = True
 
 ALLOWED_HOSTS = [
-	'159.203.59.80', 
-	'superlists-staging.ticketdraft.ca/']
+	'localhost']
 
 
 # Application definition
