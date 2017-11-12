@@ -3,7 +3,10 @@ from django.utils.html import escape
 from unittest import skip
 
 from lists.models import Item, List
-from lists.forms import ItemForm, EMPTY_ITEM_ERROR
+from lists.forms import (
+	 EMPTY_ITEM_ERROR, DUPLICATE_ITEM_ERROR
+	 ItemForm, ExistingListItemForm
+)
 
 class HomePageTest(TestCase):
 
