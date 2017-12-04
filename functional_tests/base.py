@@ -5,6 +5,7 @@ import time
 import os
 
 MAX_WAIT = 10
+	
 		
 def wait(fn):
 	def modified_fn(*args, **kwargs):
@@ -18,6 +19,7 @@ def wait(fn):
 				time.sleep(0.5)
 	return modified_fn
 		
+
 class FunctionalTest(StaticLiveServerTestCase):
 
 	def setUp(self):
@@ -28,16 +30,16 @@ class FunctionalTest(StaticLiveServerTestCase):
 
 	def tearDown(self):
 		self.browser.quit()
+
+	@wait
+	def wait_for(self, fn):
+		return fn()
 		
 	@wait
 	def wait_for_row_in_list_table(self, row_text):
 		table = self.browser.find_element_by_id('id_list_table')
 		rows = table.find_elements_by_tag_name('tr')
 		self.assertIn(row_text, [row.text for row in rows])
-
-	@wait
-	def wait_for(self, fn):
-		return fn()
 				
 	def get_item_input_box(self):
 		return self.browser.find_element_by_id('id_text')
